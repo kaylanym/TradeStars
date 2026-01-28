@@ -31,9 +31,10 @@ export default function Home() {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
-          <div className="w-16 h-16 mx-auto mb-4 relative">
-            <div className="absolute inset-0 rounded-full border-4 border-primary/20"></div>
-            <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+          <div className="w-24 h-24 mx-auto mb-4 relative">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary to-secondary p-4 animate-pulse">
+              <img src="/logo.png" alt="TradeStars" className="w-full h-full object-contain" />
+            </div>
           </div>
           <h1 className="text-2xl font-bold gradient-text">TradeStars</h1>
           <p className="text-gray-400 mt-2">Carregando...</p>
