@@ -1,3 +1,0 @@
-# TradeStars Backend
-
-
