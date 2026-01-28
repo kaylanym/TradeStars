@@ -24,7 +24,7 @@ const integrations: Integration[] = [
   {
     id: 'xp',
     name: 'XP Investimentos',
-    logo: '🏦',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Logo_da_XP_Investimentos_01.png/320px-Logo_da_XP_Investimentos_01.png',
     description: 'Integração completa com sua conta XP para importar portfolio e operações automaticamente.',
     type: 'broker',
     status: 'available',
@@ -33,7 +33,7 @@ const integrations: Integration[] = [
   {
     id: 'clear',
     name: 'Clear Corretora',
-    logo: '💎',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Clear_Corretora_logo.svg/320px-Clear_Corretora_logo.svg.png',
     description: 'Sincronize seus trades e investimentos da Clear em tempo real.',
     type: 'broker',
     status: 'available',
@@ -42,7 +42,7 @@ const integrations: Integration[] = [
   {
     id: 'rico',
     name: 'Rico Investimentos',
-    logo: '🚀',
+    logo: 'https://seeklogo.com/images/R/rico-investimentos-logo-6E3F64B04D-seeklogo.com.png',
     description: 'Conecte sua conta Rico para análise completa do seu portfolio.',
     type: 'broker',
     status: 'available',
@@ -51,7 +51,7 @@ const integrations: Integration[] = [
   {
     id: 'btg',
     name: 'BTG Pactual',
-    logo: '🏛️',
+    logo: 'https://seeklogo.com/images/B/btg-pactual-logo-7C3C3F66C5-seeklogo.com.png',
     description: 'Integração premium com BTG para investidores qualificados.',
     type: 'broker',
     status: 'coming-soon',
@@ -60,7 +60,7 @@ const integrations: Integration[] = [
   {
     id: 'nuinvest',
     name: 'Nu Invest',
-    logo: '💜',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Nubank_logo_2021.svg/320px-Nubank_logo_2021.svg.png',
     description: 'Conecte sua conta Nu Invest e tenha análises completas.',
     type: 'broker',
     status: 'coming-soon',
@@ -69,7 +69,7 @@ const integrations: Integration[] = [
   {
     id: 'inter',
     name: 'Inter Invest',
-    logo: '🧡',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Logo_do_banco_Inter_%282023%29.svg/320px-Logo_do_banco_Inter_%282023%29.svg.png',
     description: 'Sincronize seus investimentos do Banco Inter.',
     type: 'broker',
     status: 'coming-soon',
@@ -78,7 +78,7 @@ const integrations: Integration[] = [
   {
     id: 'mt5',
     name: 'MetaTrader 5',
-    logo: '📊',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/MetaTrader_5_logo.png/320px-MetaTrader_5_logo.png',
     description: 'Integração profissional com MT5 para traders avançados.',
     type: 'platform',
     status: 'active',
@@ -87,7 +87,7 @@ const integrations: Integration[] = [
   {
     id: 'tradingview',
     name: 'TradingView',
-    logo: '📈',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TradingView_Logo.svg/320px-TradingView_Logo.svg.png',
     description: 'Receba alertas e sinais do TradingView automaticamente.',
     type: 'platform',
     status: 'active',
@@ -246,7 +246,25 @@ function IntegrationCard({ integration, index }: { integration: Integration; ind
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="text-4xl">{integration.logo}</div>
+          <div className="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+            <img 
+              src={integration.logo} 
+              alt={integration.name}
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                // Fallback para emoji se imagem não carregar
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `<span class="text-2xl">${
+                    integration.type === 'broker' ? '🏦' : '📊'
+                  }</span>`;
+                  parent.className = 'w-12 h-12 flex items-center justify-center bg-surface-light rounded-lg';
+                }
+              }}
+            />
+          </div>
           <div>
             <h3 className="font-semibold group-hover:text-primary transition-colors">
               {integration.name}
