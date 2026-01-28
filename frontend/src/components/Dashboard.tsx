@@ -10,7 +10,10 @@ import {
   DollarSign,
   BarChart3,
   Activity,
-  Zap
+  Zap,
+  ArrowUpRight,
+  ArrowDownRight,
+  ChevronRight
 } from 'lucide-react'
 import { 
   AreaChart, 
@@ -22,9 +25,8 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
+  LineChart,
+  Line
 } from 'recharts'
 import { analyticsApi, DashboardStats, HourlyPerformance, SymbolPerformance, DailyPerformance } from '@/lib/api'
 import { formatCurrency, formatPercent, cn } from '@/lib/utils'
@@ -80,8 +82,6 @@ mockDailyData.reduce((acc, day) => {
   return day.cumulative
 }, 0)
 
-const COLORS = ['#00d4aa', '#6366f1', '#f59e0b', '#ef4444']
-
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>(mockStats)
   const [hourlyData, setHourlyData] = useState<HourlyPerformance[]>(mockHourlyData)
@@ -115,327 +115,311 @@ export default function Dashboard() {
     fetchData()
   }, [])
 
-  const StatCard = ({ 
-    title, 
-    value, 
-    subtitle, 
-    icon: Icon, 
-    trend, 
-    color = 'primary' 
-  }: { 
-    title: string
-    value: string
-    subtitle?: string
-    icon: any
-    trend?: 'up' | 'down'
-    color?: 'primary' | 'success' | 'danger' | 'warning'
-  }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-surface rounded-2xl p-6 border border-border card-hover"
-    >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-gray-400 text-sm mb-1">{title}</p>
-          <h3 className={cn(
-            'text-2xl font-bold stat-number',
-            color === 'success' && 'text-success',
-            color === 'danger' && 'text-danger',
-            color === 'warning' && 'text-warning',
-            color === 'primary' && 'text-white'
-          )}>
-            {value}
-          </h3>
-          {subtitle && (
-            <p className="text-gray-500 text-xs mt-1">{subtitle}</p>
-          )}
-        </div>
-        <div className={cn(
-          'w-12 h-12 rounded-xl flex items-center justify-center',
-          color === 'success' && 'bg-success/10',
-          color === 'danger' && 'bg-danger/10',
-          color === 'warning' && 'bg-warning/10',
-          color === 'primary' && 'bg-primary/10'
-        )}>
-          <Icon className={cn(
-            'w-6 h-6',
-            color === 'success' && 'text-success',
-            color === 'danger' && 'text-danger',
-            color === 'warning' && 'text-warning',
-            color === 'primary' && 'text-primary'
-          )} />
-        </div>
-      </div>
-    </motion.div>
-  )
+  const profitChange = stats.net_profit >= 0 ? '+12.5%' : '-8.3%'
+  const isPositive = stats.net_profit >= 0
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 relative">
+      {/* Background Glow Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-40 right-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-40 left-20 w-96 h-96 bg-secondary/15 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/3 left-1/3 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
+      </div>
+
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between relative z-10">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-gray-400 mt-1">Visão geral da sua performance</p>
+          <h1 className="text-4xl font-bold mb-2">Overview</h1>
+          <p className="text-gray-400">Acompanhe sua performance em tempo real</p>
         </div>
-        <div className="flex items-center gap-3">
-          <select className="bg-surface border border-border rounded-xl px-4 py-2 text-sm">
-            <option>Últimos 30 dias</option>
-            <option>Últimos 7 dias</option>
-            <option>Este mês</option>
-            <option>Este ano</option>
-          </select>
-        </div>
+        <select className="bg-surface border border-border rounded-lg px-4 py-2.5 text-sm font-medium hover:border-primary/50 transition-colors">
+          <option>Últimos 30 dias</option>
+          <option>Últimos 7 dias</option>
+          <option>Este mês</option>
+          <option>Este ano</option>
+        </select>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Lucro Líquido"
-          value={formatCurrency(stats.net_profit)}
-          subtitle={`${stats.total_trades} operações`}
-          icon={stats.net_profit >= 0 ? TrendingUp : TrendingDown}
-          color={stats.net_profit >= 0 ? 'success' : 'danger'}
-        />
-        <StatCard
-          title="Win Rate"
-          value={formatPercent(stats.win_rate)}
-          subtitle={`${stats.winning_trades}W / ${stats.losing_trades}L`}
-          icon={Target}
-          color={stats.win_rate >= 50 ? 'success' : 'warning'}
-        />
-        <StatCard
-          title="Profit Factor"
-          value={stats.profit_factor.toFixed(2)}
-          subtitle="Ganho / Perda"
-          icon={BarChart3}
-          color={stats.profit_factor >= 1 ? 'success' : 'danger'}
-        />
-        <StatCard
-          title="Duração Média"
-          value={`${stats.average_duration} min`}
-          subtitle="Por operação"
-          icon={Clock}
-          color="primary"
-        />
-      </div>
+      {/* Main Performance Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-br from-surface via-surface to-surface-light border border-border/50 rounded-3xl p-8 relative z-10"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Lucro Líquido - Destaque Principal */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-2 mb-3">
+              <div className={cn(
+                "w-2 h-2 rounded-full",
+                isPositive ? "bg-success animate-pulse" : "bg-danger animate-pulse"
+              )} />
+              <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+                Lucro Líquido
+              </span>
+            </div>
+            <div className="mb-4">
+              <h2 className={cn(
+                "text-5xl font-bold mb-2",
+                isPositive ? "text-success" : "text-danger"
+              )}>
+                {formatCurrency(stats.net_profit)}
+              </h2>
+              <div className="flex items-center gap-2">
+                {isPositive ? (
+                  <ArrowUpRight className="w-5 h-5 text-success" />
+                ) : (
+                  <ArrowDownRight className="w-5 h-5 text-danger" />
+                )}
+                <span className={cn(
+                  "text-lg font-semibold",
+                  isPositive ? "text-success" : "text-danger"
+                )}>
+                  {profitChange}
+                </span>
+                <span className="text-sm text-gray-500">vs período anterior</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-sm pt-4 border-t border-border/50">
+              <div>
+                <p className="text-gray-500 mb-1">Total Trades</p>
+                <p className="text-xl font-bold">{stats.total_trades}</p>
+              </div>
+              <div className="w-px h-10 bg-border/50" />
+              <div>
+                <p className="text-gray-500 mb-1">Período</p>
+                <p className="text-xl font-bold">30 dias</p>
+              </div>
+            </div>
+          </div>
 
-      {/* Secondary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Métricas Principais - Limpo */}
+          <div className="lg:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Target className="w-4 h-4 text-primary" />
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Win Rate</p>
+              </div>
+              <p className="text-3xl font-bold mb-1">{formatPercent(stats.win_rate)}</p>
+              <p className="text-xs text-gray-500">{stats.winning_trades}W / {stats.losing_trades}L</p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <BarChart3 className="w-4 h-4 text-secondary" />
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">P. Factor</p>
+              </div>
+              <p className="text-3xl font-bold mb-1">{stats.profit_factor.toFixed(2)}</p>
+              <p className="text-xs text-gray-500">Razão Ganho/Perda</p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="w-4 h-4 text-success" />
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Média Win</p>
+              </div>
+              <p className="text-3xl font-bold mb-1">{formatCurrency(stats.average_win)}</p>
+              <p className="text-xs text-gray-500">Por operação</p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="w-4 h-4 text-warning" />
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Duração</p>
+              </div>
+              <p className="text-3xl font-bold mb-1">{stats.average_duration}min</p>
+              <p className="text-xs text-gray-500">Tempo médio</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+        {/* Performance Cumulativa */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-surface rounded-2xl p-6 border border-border"
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-success" />
-            </div>
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-gray-400 text-sm">Gain Médio</p>
-              <p className="text-xl font-bold text-success">{formatCurrency(stats.average_win)}</p>
+              <h3 className="text-lg font-semibold mb-1">Performance Acumulada</h3>
+              <p className="text-sm text-gray-500">Evolução do lucro nos últimos 30 dias</p>
             </div>
           </div>
-          <div className="text-sm text-gray-400">
-            Melhor trade: <span className="text-success font-medium">{formatCurrency(stats.best_trade)}</span>
-          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={dailyData}>
+              <defs>
+                <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#00d4aa" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#00d4aa" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+              <XAxis 
+                dataKey="date" 
+                stroke="#71717a"
+                fontSize={11}
+                tickFormatter={(value) => {
+                  const date = new Date(value)
+                  return `${date.getDate()}/${date.getMonth() + 1}`
+                }}
+                tickLine={false}
+              />
+              <YAxis 
+                stroke="#71717a"
+                fontSize={11}
+                tickFormatter={(value) => `R$ ${value}`}
+                tickLine={false}
+                axisLine={false}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#18181b', 
+                  border: '1px solid #27272a',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+                formatter={(value: any) => [formatCurrency(value), 'Lucro Acumulado']}
+                labelFormatter={(label) => {
+                  const date = new Date(label)
+                  return date.toLocaleDateString('pt-BR')
+                }}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="cumulative" 
+                stroke="#00d4aa" 
+                strokeWidth={2}
+                fill="url(#profitGradient)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </motion.div>
 
+        {/* Performance por Horário */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-surface rounded-2xl p-6 border border-border"
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-danger/10 flex items-center justify-center">
-              <TrendingDown className="w-5 h-5 text-danger" />
-            </div>
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-gray-400 text-sm">Loss Médio</p>
-              <p className="text-xl font-bold text-danger">{formatCurrency(stats.average_loss)}</p>
+              <h3 className="text-lg font-semibold mb-1">Performance por Horário</h3>
+              <p className="text-sm text-gray-500">Identifique seus melhores períodos</p>
             </div>
           </div>
-          <div className="text-sm text-gray-400">
-            Pior trade: <span className="text-danger font-medium">{formatCurrency(stats.worst_trade)}</span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-gray-400 text-sm">Limites Sugeridos</p>
-              <p className="text-sm font-medium text-primary">Baseado no seu histórico</p>
-            </div>
-          </div>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-400">Loss diário máx:</span>
-              <span className="text-danger font-medium">{formatCurrency(stats.suggested_daily_loss)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Meta de gain:</span>
-              <span className="text-success font-medium">{formatCurrency(stats.suggested_daily_gain)}</span>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={hourlyData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+              <XAxis 
+                dataKey="hour_label" 
+                stroke="#71717a"
+                fontSize={11}
+                tickLine={false}
+              />
+              <YAxis 
+                stroke="#71717a"
+                fontSize={11}
+                tickFormatter={(value) => `R$ ${value}`}
+                tickLine={false}
+                axisLine={false}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#18181b', 
+                  border: '1px solid #27272a',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+                formatter={(value: any) => [formatCurrency(value), 'Lucro']}
+              />
+              <Bar 
+                dataKey="profit" 
+                radius={[4, 4, 0, 0]}
+                fill="#6366f1"
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </motion.div>
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Cumulative Profit Chart */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-surface rounded-2xl p-6 border border-border"
-        >
-          <h3 className="text-lg font-semibold mb-4">Evolução do Lucro</h3>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={dailyData}>
-                <defs>
-                  <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00d4aa" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#00d4aa" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2a2a3a" />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#666"
-                  fontSize={12}
-                  tickFormatter={(value) => value.split('-').slice(1).join('/')}
-                />
-                <YAxis 
-                  stroke="#666"
-                  fontSize={12}
-                  tickFormatter={(value) => `R$${value}`}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    background: '#12121a', 
-                    border: '1px solid #2a2a3a',
-                    borderRadius: '12px'
-                  }}
-                  formatter={(value: number) => [formatCurrency(value), 'Lucro Acumulado']}
-                  labelFormatter={(label) => `Data: ${label}`}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="cumulative" 
-                  stroke="#00d4aa" 
-                  strokeWidth={2}
-                  fillOpacity={1} 
-                  fill="url(#colorProfit)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-
-        {/* Hourly Performance */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-surface rounded-2xl p-6 border border-border"
-        >
-          <h3 className="text-lg font-semibold mb-4">Performance por Horário</h3>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={hourlyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2a2a3a" />
-                <XAxis 
-                  dataKey="hour_label" 
-                  stroke="#666"
-                  fontSize={12}
-                />
-                <YAxis 
-                  stroke="#666"
-                  fontSize={12}
-                  tickFormatter={(value) => `R$${value}`}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    background: '#12121a', 
-                    border: '1px solid #2a2a3a',
-                    borderRadius: '12px'
-                  }}
-                  formatter={(value: number, name: string) => {
-                    if (name === 'profit') return [formatCurrency(value), 'Lucro']
-                    return [value, name]
-                  }}
-                />
-                <Bar 
-                  dataKey="profit" 
-                  radius={[4, 4, 0, 0]}
-                >
-                  {hourlyData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.profit >= 0 ? '#10b981' : '#ef4444'} 
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Symbol Performance */}
+      {/* Top Symbols Table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-surface rounded-2xl p-6 border border-border"
+        transition={{ delay: 0.3 }}
+        className="bg-surface border border-border/50 rounded-2xl overflow-hidden relative z-10"
       >
-        <h3 className="text-lg font-semibold mb-4">Performance por Ativo</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {symbolData.map((symbol, index) => (
-            <div 
-              key={symbol.symbol}
-              className={cn(
-                'p-4 rounded-xl border',
-                symbol.profit >= 0 
-                  ? 'bg-success/5 border-success/20' 
-                  : 'bg-danger/5 border-danger/20'
-              )}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-bold">{symbol.symbol}</span>
-                <span className={cn(
-                  'text-sm font-medium px-2 py-1 rounded-lg',
-                  symbol.win_rate >= 50 ? 'bg-success/20 text-success' : 'bg-danger/20 text-danger'
-                )}>
-                  {formatPercent(symbol.win_rate)}
-                </span>
-              </div>
-              <div className={cn(
-                'text-xl font-bold',
-                symbol.profit >= 0 ? 'text-success' : 'text-danger'
-              )}>
-                {formatCurrency(symbol.profit)}
-              </div>
-              <div className="text-sm text-gray-400 mt-1">
-                {symbol.trades} operações
-              </div>
+        <div className="px-6 py-5 border-b border-border/50">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold mb-1">Top Ativos</h3>
+              <p className="text-sm text-gray-500">Performance por ativo negociado</p>
             </div>
-          ))}
+            <button className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 font-medium">
+              Ver todos
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border/50">
+                <th className="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ativo</th>
+                <th className="text-right py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Trades</th>
+                <th className="text-right py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Win Rate</th>
+                <th className="text-right py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Lucro Médio</th>
+                <th className="text-right py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Lucro Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {symbolData.map((symbol, index) => (
+                <tr 
+                  key={symbol.symbol}
+                  className="border-b border-border/30 hover:bg-surface-light/50 transition-colors"
+                >
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <span className="text-xs font-bold text-primary">
+                          {symbol.symbol.substring(0, 2)}
+                        </span>
+                      </div>
+                      <span className="font-semibold">{symbol.symbol}</span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-right font-medium">{symbol.trades}</td>
+                  <td className="py-4 px-6 text-right">
+                    <span className={cn(
+                      "font-semibold",
+                      symbol.win_rate >= 50 ? "text-success" : "text-danger"
+                    )}>
+                      {formatPercent(symbol.win_rate)}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6 text-right font-medium">
+                    {formatCurrency(symbol.average_profit)}
+                  </td>
+                  <td className="py-4 px-6 text-right">
+                    <span className={cn(
+                      "font-bold text-base",
+                      symbol.profit >= 0 ? "text-success" : "text-danger"
+                    )}>
+                      {formatCurrency(symbol.profit)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </motion.div>
     </div>
   )
 }
-
-

@@ -8,8 +8,10 @@ import {
   AlertTriangle,
   CheckCircle,
   Target,
-  PieChart,
-  Activity
+  PieChart as PieChartIcon,
+  Activity,
+  ChevronRight,
+  Info
 } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from 'recharts'
 
@@ -73,106 +75,123 @@ const performanceComparison = [
 
 export default function AnalysisPage() {
   return (
-    <div className="p-8 space-y-8">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <BarChart3 className="w-6 h-6 text-background" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold gradient-text">Análise de Portfolio</h1>
-            <p className="text-gray-400">Insights profundos sobre seus investimentos</p>
-          </div>
-        </div>
+    <div className="space-y-8 relative">
+      {/* Background Glow Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-40 left-20 w-96 h-96 bg-primary/15 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-40 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-2/3 right-1/3 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
       </div>
 
-      {/* Score Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* Header */}
+      <div className="flex items-start justify-between relative z-10">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">Análise Profunda</h1>
+          <p className="text-gray-400">Insights inteligentes sobre seu portfolio</p>
+        </div>
+        <select className="bg-surface border border-border/50 rounded-lg px-4 py-2.5 text-sm font-medium hover:border-primary/50 transition-colors">
+          <option>Últimos 6 meses</option>
+          <option>Este ano</option>
+          <option>Todo período</option>
+        </select>
+      </div>
+
+      {/* Score Cards - Clean */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface border border-border/50 rounded-lg p-6"
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-500 font-medium">Score Geral</span>
-            <CheckCircle className="w-4 h-4 text-gray-500" />
+          <div className="flex items-center gap-2 mb-3">
+            <CheckCircle className="w-4 h-4 text-success" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Score Geral</span>
           </div>
-          <p className="text-3xl font-semibold text-primary mb-1">8.5</p>
+          <p className="text-4xl font-bold mb-1">8.5</p>
           <p className="text-xs text-gray-500">Muito Bom</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-surface border border-border/50 rounded-lg p-6"
+          transition={{ delay: 0.05 }}
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-500 font-medium">Risco</span>
-            <Activity className="w-4 h-4 text-gray-500" />
+          <div className="flex items-center gap-2 mb-3">
+            <Activity className="w-4 h-4 text-primary" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Risco</span>
           </div>
-          <p className="text-3xl font-semibold text-white mb-1">Médio</p>
+          <p className="text-4xl font-bold mb-1">Médio</p>
           <p className="text-xs text-gray-500">Balanceado</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-surface border border-border/50 rounded-lg p-6"
+          transition={{ delay: 0.1 }}
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-500 font-medium">Retorno Anual</span>
-            <TrendingUp className="w-4 h-4 text-gray-500" />
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp className="w-4 h-4 text-success" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Retorno Anual</span>
           </div>
-          <p className="text-3xl font-semibold text-primary mb-1">+38.9%</p>
+          <p className="text-4xl font-bold mb-1 text-success">+38.9%</p>
           <p className="text-xs text-gray-500">vs IBOV +24.2%</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-surface border border-border/50 rounded-lg p-6"
+          transition={{ delay: 0.15 }}
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-500 font-medium">Sharpe Ratio</span>
-            <Target className="w-4 h-4 text-gray-500" />
+          <div className="flex items-center gap-2 mb-3">
+            <Target className="w-4 h-4 text-secondary" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Sharpe Ratio</span>
           </div>
-          <p className="text-3xl font-semibold text-white mb-1">1.85</p>
+          <p className="text-4xl font-bold mb-1">1.85</p>
           <p className="text-xs text-gray-500">Excelente</p>
         </motion.div>
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
         {/* Risk Radar */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center gap-2 mb-6">
-            <Activity className="w-5 h-5 text-primary" />
-            <h2 className="text-xl font-bold">Análise de Risco</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-1">Análise de Risco</h3>
+              <p className="text-sm text-gray-500">Métricas de segurança do portfolio</p>
+            </div>
           </div>
           
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={280}>
             <RadarChart data={riskMetrics}>
-              <PolarGrid stroke="#374151" />
-              <PolarAngleAxis dataKey="category" stroke="#9ca3af" />
-              <PolarRadiusAxis stroke="#9ca3af" />
-              <Radar name="Seu Portfolio" dataKey="score" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
-              <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }} />
+              <PolarGrid stroke="#27272a" />
+              <PolarAngleAxis dataKey="category" stroke="#71717a" fontSize={11} />
+              <PolarRadiusAxis stroke="#71717a" />
+              <Radar name="Score" dataKey="score" stroke="#60a5fa" fill="#60a5fa" fillOpacity={0.2} strokeWidth={2} />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#18181b', 
+                  border: '1px solid #27272a',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+              />
             </RadarChart>
           </ResponsiveContainer>
 
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-border/50">
             {riskMetrics.map((metric) => (
               <div key={metric.category} className="flex items-center justify-between">
                 <span className="text-sm text-gray-400">{metric.category}</span>
-                <span className="text-sm font-semibold">{metric.score}/100</span>
+                <span className="text-sm font-semibold text-primary">{metric.score}</span>
               </div>
             ))}
           </div>
@@ -180,118 +199,159 @@ export default function AnalysisPage() {
 
         {/* Performance Comparison */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="w-5 h-5 text-secondary" />
-            <h2 className="text-xl font-bold">Performance vs Benchmarks</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-1">Performance vs Benchmarks</h3>
+              <p className="text-sm text-gray-500">Comparação com índices</p>
+            </div>
           </div>
           
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={280}>
             <LineChart data={performanceComparison}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" strokeWidth={0.5} />
-              <XAxis dataKey="month" stroke="#71717a" tick={{ fontSize: 12 }} />
-              <YAxis stroke="#71717a" tick={{ fontSize: 12 }} />
-              <Tooltip contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '6px', fontSize: '12px' }} />
-              <Legend wrapperStyle={{ fontSize: '12px' }} />
-              <Line type="monotone" dataKey="portfolio" stroke="#3b82f6" strokeWidth={1.5} name="Seu Portfolio" dot={false} />
-              <Line type="monotone" dataKey="ibov" stroke="#64748b" strokeWidth={1.5} name="IBOVESPA" dot={false} />
-              <Line type="monotone" dataKey="cdi" stroke="#94a3b8" strokeWidth={1.5} strokeDasharray="3 3" name="CDI" dot={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+              <XAxis 
+                dataKey="month" 
+                stroke="#71717a" 
+                fontSize={11}
+                tickLine={false}
+              />
+              <YAxis 
+                stroke="#71717a" 
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `${value}%`}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#18181b', 
+                  border: '1px solid #27272a',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+                formatter={(value: any) => [`${value}%`, '']}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }} />
+              <Line type="monotone" dataKey="portfolio" stroke="#60a5fa" strokeWidth={2} name="Portfolio" dot={false} />
+              <Line type="monotone" dataKey="ibov" stroke="#94a3b8" strokeWidth={2} name="IBOVESPA" dot={false} />
+              <Line type="monotone" dataKey="cdi" stroke="#71717a" strokeWidth={2} strokeDasharray="5 5" name="CDI" dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </motion.div>
       </div>
 
-      {/* Sector Allocation Analysis */}
+      {/* Sector Allocation Analysis - Fixed & Clean */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-surface border border-border rounded-xl p-6"
+        transition={{ delay: 0.3 }}
+        className="bg-surface border border-border/50 rounded-2xl overflow-hidden relative z-10"
       >
-        <div className="flex items-center gap-2 mb-6">
-          <PieChart className="w-5 h-5 text-primary" />
-          <h2 className="text-xl font-bold">Análise Setorial</h2>
+        <div className="px-6 py-5 border-b border-border/50">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold mb-1">Análise Setorial</h3>
+              <p className="text-sm text-gray-500">Distribuição por setor vs recomendado</p>
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-4">
-          {sectorAllocation.map((sector) => {
-            const statusConfig = {
-              over: { color: 'text-orange-400', bg: 'bg-orange-500/20', label: 'Acima' },
-              under: { color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Abaixo' },
-              good: { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Bom' },
-              perfect: { color: 'text-primary', bg: 'bg-primary/20', label: 'Ideal' }
-            }
-            const config = statusConfig[sector.status as keyof typeof statusConfig]
+        <div className="p-6">
+          <div className="space-y-6">
+            {sectorAllocation.map((sector) => {
+              const statusConfig = {
+                over: { color: 'text-warning', icon: '↑', label: 'Acima' },
+                under: { color: 'text-primary', icon: '↓', label: 'Abaixo' },
+                good: { color: 'text-gray-400', icon: '•', label: 'Bom' },
+                perfect: { color: 'text-success', icon: '✓', label: 'Ideal' }
+              }
+              const config = statusConfig[sector.status as keyof typeof statusConfig]
+              
+              // Limitar a barra a 100% para não vazar
+              const barWidth = Math.min((sector.percentage / sector.recommended) * 100, 100)
 
-            return (
-              <div key={sector.sector} className="bg-surface-light rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-semibold">{sector.sector}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${config.bg} ${config.color}`}>
-                      {config.label}
-                    </span>
+              return (
+                <div key={sector.sector} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <h4 className="font-semibold">{sector.sector}</h4>
+                      <span className={`text-xs font-medium ${config.color}`}>
+                        {config.icon} {config.label}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-bold">{sector.percentage}%</span>
+                      <span className="text-xs text-gray-500 ml-2">
+                        (meta: {sector.recommended}%)
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold">{sector.percentage}%</p>
-                    <p className="text-xs text-gray-400">Meta: {sector.recommended}%</p>
+                  <div className="w-full bg-surface-light rounded-full h-2 overflow-hidden">
+                    <div
+                      className="h-2 rounded-full bg-primary/50"
+                      style={{ width: `${barWidth}%` }}
+                    />
                   </div>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div
-                    className={`h-2 rounded-full ${config.bg.replace('/20', '')}`}
-                    style={{ width: `${(sector.percentage / sector.recommended) * 100}%` }}
-                  />
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </motion.div>
 
-      {/* Recommendations */}
+      {/* Recommendations - Clean & Professional */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-surface border border-border rounded-xl p-6"
+        transition={{ delay: 0.35 }}
+        className="bg-surface border border-border/50 rounded-2xl p-6 relative z-10"
       >
-        <h2 className="text-xl font-bold mb-6">Recomendações Personalizadas</h2>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-1">Recomendações Personalizadas</h3>
+            <p className="text-sm text-gray-500">Sugestões baseadas em IA</p>
+          </div>
+        </div>
 
         <div className="space-y-4">
           {recommendations.map((rec, index) => {
             const typeConfig = {
-              warning: { icon: AlertTriangle, color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30' },
-              info: { icon: Activity, color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30' },
-              success: { icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30' }
+              warning: { icon: AlertTriangle, color: 'text-warning' },
+              info: { icon: Info, color: 'text-primary' },
+              success: { icon: CheckCircle, color: 'text-success' }
             }
             const config = typeConfig[rec.type as keyof typeof typeConfig]
             const Icon = config.icon
 
-            const priorityConfig = {
-              high: 'bg-red-500',
-              medium: 'bg-orange-500',
+            const priorityDot = {
+              high: 'bg-danger',
+              medium: 'bg-warning',
               low: 'bg-gray-500'
             }
 
             return (
               <div
                 key={index}
-                className={`${config.bg} border ${config.border} rounded-lg p-4`}
+                className="bg-surface-light/50 border border-border/30 rounded-lg p-5 hover:border-border/50 transition-colors"
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-lg ${config.bg} flex items-center justify-center flex-shrink-0`}>
+                  <div className="flex-shrink-0">
                     <Icon className={`w-5 h-5 ${config.color}`} />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold">{rec.title}</h3>
-                      <span className={`w-2 h-2 rounded-full ${priorityConfig[rec.priority as keyof typeof priorityConfig]}`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-4 mb-2">
+                      <h4 className="font-semibold">{rec.title}</h4>
+                      <div className={`w-2 h-2 rounded-full ${priorityDot[rec.priority as keyof typeof priorityDot]} flex-shrink-0 mt-1.5`} />
                     </div>
                     <p className="text-sm text-gray-400 mb-3">{rec.description}</p>
-                    <button className="text-sm font-medium text-primary hover:underline">
-                      {rec.action} →
+                    <button className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+                      {rec.action}
+                      <ChevronRight className="w-3 h-3" />
                     </button>
                   </div>
                 </div>

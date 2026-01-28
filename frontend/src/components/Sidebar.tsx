@@ -8,11 +8,12 @@ import {
   LineChart,
   Settings,
   LogOut,
-  TrendingUp
+  TrendingUp,
+  CreditCard
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-type PageType = 'dashboard' | 'import' | 'insights' | 'trades' | 'portfolio' | 'analysis' | 'integrations' | 'mentorship'
+type PageType = 'dashboard' | 'import' | 'insights' | 'trades' | 'portfolio' | 'analysis' | 'integrations' | 'mentorship' | 'billing'
 
 interface SidebarProps {
   currentPage: PageType
@@ -34,13 +35,14 @@ const menuSections = [
     items: [
       { id: 'integrations', label: 'Integrações', icon: Settings, badge: 'Novo' },
       { id: 'import', label: 'Importar Dados', icon: Upload },
+      { id: 'billing', label: 'Plano & Pagamento', icon: CreditCard },
     ]
   },
   {
     title: 'Inteligência',
     items: [
       { id: 'insights', label: 'Insights IA', icon: Brain },
-      { id: 'mentorship', label: 'Mentoria', icon: LogOut, badge: 'Em Breve' },
+      { id: 'mentorship', label: 'Analista', icon: LogOut },
     ]
   }
 ]

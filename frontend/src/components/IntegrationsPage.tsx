@@ -7,7 +7,9 @@ import {
   Clock, 
   Link2,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Zap,
+  ChevronRight
 } from 'lucide-react'
 
 interface Integration {
@@ -24,7 +26,7 @@ const integrations: Integration[] = [
   {
     id: 'xp',
     name: 'XP Investimentos',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Logo_da_XP_Investimentos_01.png/320px-Logo_da_XP_Investimentos_01.png',
+    logo: '/logos/xp.png',
     description: 'Integração completa com sua conta XP para importar portfolio e operações automaticamente.',
     type: 'broker',
     status: 'available',
@@ -33,7 +35,7 @@ const integrations: Integration[] = [
   {
     id: 'clear',
     name: 'Clear Corretora',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Clear_Corretora_logo.svg/320px-Clear_Corretora_logo.svg.png',
+    logo: '/logos/clear.png',
     description: 'Sincronize seus trades e investimentos da Clear em tempo real.',
     type: 'broker',
     status: 'available',
@@ -42,7 +44,7 @@ const integrations: Integration[] = [
   {
     id: 'rico',
     name: 'Rico Investimentos',
-    logo: 'https://seeklogo.com/images/R/rico-investimentos-logo-6E3F64B04D-seeklogo.com.png',
+    logo: '/logos/rico.png',
     description: 'Conecte sua conta Rico para análise completa do seu portfolio.',
     type: 'broker',
     status: 'available',
@@ -51,7 +53,7 @@ const integrations: Integration[] = [
   {
     id: 'btg',
     name: 'BTG Pactual',
-    logo: 'https://seeklogo.com/images/B/btg-pactual-logo-7C3C3F66C5-seeklogo.com.png',
+    logo: '/logos/btg.png',
     description: 'Integração premium com BTG para investidores qualificados.',
     type: 'broker',
     status: 'coming-soon',
@@ -60,7 +62,7 @@ const integrations: Integration[] = [
   {
     id: 'nuinvest',
     name: 'Nu Invest',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Nubank_logo_2021.svg/320px-Nubank_logo_2021.svg.png',
+    logo: '/logos/nubank.png',
     description: 'Conecte sua conta Nu Invest e tenha análises completas.',
     type: 'broker',
     status: 'coming-soon',
@@ -69,7 +71,7 @@ const integrations: Integration[] = [
   {
     id: 'inter',
     name: 'Inter Invest',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Logo_do_banco_Inter_%282023%29.svg/320px-Logo_do_banco_Inter_%282023%29.svg.png',
+    logo: '/logos/inter.png',
     description: 'Sincronize seus investimentos do Banco Inter.',
     type: 'broker',
     status: 'coming-soon',
@@ -78,7 +80,7 @@ const integrations: Integration[] = [
   {
     id: 'mt5',
     name: 'MetaTrader 5',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/MetaTrader_5_logo.png/320px-MetaTrader_5_logo.png',
+    logo: '/logos/mt5.png',
     description: 'Integração profissional com MT5 para traders avançados.',
     type: 'platform',
     status: 'active',
@@ -87,7 +89,7 @@ const integrations: Integration[] = [
   {
     id: 'tradingview',
     name: 'TradingView',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TradingView_Logo.svg/320px-TradingView_Logo.svg.png',
+    logo: '/logos/tradingview.png',
     description: 'Receba alertas e sinais do TradingView automaticamente.',
     type: 'platform',
     status: 'active',
@@ -101,77 +103,75 @@ export default function IntegrationsPage() {
   const comingSoonIntegrations = integrations.filter(i => i.status === 'coming-soon')
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="space-y-8 relative">
+      {/* Background Glow Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary/15 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-secondary/10 rounded-full blur-[100px]" />
+      </div>
+
       {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <Link2 className="w-6 h-6 text-background" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold gradient-text">Integrações</h1>
-            <p className="text-gray-400">Conecte suas contas e plataformas</p>
-          </div>
+      <div className="flex items-start justify-between relative z-10">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">Integrações</h1>
+          <p className="text-gray-400">Conecte suas contas e plataformas de trading</p>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Stats - Clean */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-              <Check className="w-5 h-5 text-primary" />
-            </div>
-            <span className="text-3xl font-bold gradient-text">{activeIntegrations.length}</span>
+          <div className="flex items-center gap-2 mb-3">
+            <Check className="w-4 h-4 text-success" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Ativas</span>
           </div>
-          <h3 className="font-semibold mb-1">Integrações Ativas</h3>
-          <p className="text-sm text-gray-400">Conectadas e funcionando</p>
+          <p className="text-4xl font-bold mb-1">{activeIntegrations.length}</p>
+          <p className="text-xs text-gray-500">Conectadas e funcionando</p>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="bg-surface border border-border/50 rounded-2xl p-6"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-4 h-4 text-primary" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Disponíveis</span>
+          </div>
+          <p className="text-4xl font-bold mb-1">{availableIntegrations.length}</p>
+          <p className="text-xs text-gray-500">Prontas para conectar</p>
         </motion.div>
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          className="bg-surface border border-border/50 rounded-2xl p-6"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-secondary" />
-            </div>
-            <span className="text-3xl font-bold gradient-text">{availableIntegrations.length}</span>
+          <div className="flex items-center gap-2 mb-3">
+            <Clock className="w-4 h-4 text-gray-500" />
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Em Breve</span>
           </div>
-          <h3 className="font-semibold mb-1">Disponíveis</h3>
-          <p className="text-sm text-gray-400">Prontas para conectar</p>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-surface border border-border rounded-xl p-6"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 rounded-lg bg-gray-700/50 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-gray-400" />
-            </div>
-            <span className="text-3xl font-bold text-gray-400">{comingSoonIntegrations.length}</span>
-          </div>
-          <h3 className="font-semibold mb-1">Em Breve</h3>
-          <p className="text-sm text-gray-400">Próximas integrações</p>
+          <p className="text-4xl font-bold mb-1">{comingSoonIntegrations.length}</p>
+          <p className="text-xs text-gray-500">Próximas integrações</p>
         </motion.div>
       </div>
 
       {/* Active Integrations */}
       {activeIntegrations.length > 0 && (
-        <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <Check className="w-5 h-5 text-primary" />
-            Integrações Ativas
-          </h2>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-1">Integrações Ativas</h2>
+              <p className="text-sm text-gray-500">Conectadas e sincronizando</p>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {activeIntegrations.map((integration, index) => (
               <IntegrationCard key={integration.id} integration={integration} index={index} />
@@ -182,11 +182,13 @@ export default function IntegrationsPage() {
 
       {/* Available Integrations */}
       {availableIntegrations.length > 0 && (
-        <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-secondary" />
-            Corretoras Disponíveis
-          </h2>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-1">Corretoras Disponíveis</h2>
+              <p className="text-sm text-gray-500">Conecte em poucos cliques</p>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {availableIntegrations.map((integration, index) => (
               <IntegrationCard key={integration.id} integration={integration} index={index} />
@@ -197,11 +199,13 @@ export default function IntegrationsPage() {
 
       {/* Coming Soon */}
       {comingSoonIntegrations.length > 0 && (
-        <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-gray-400" />
-            Em Breve
-          </h2>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-1">Em Desenvolvimento</h2>
+              <p className="text-sm text-gray-500">Próximas integrações</p>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {comingSoonIntegrations.map((integration, index) => (
               <IntegrationCard key={integration.id} integration={integration} index={index} />
@@ -217,21 +221,21 @@ function IntegrationCard({ integration, index }: { integration: Integration; ind
   const statusConfig = {
     active: {
       badge: 'Conectado',
-      badgeClass: 'bg-primary/20 text-primary border-primary/30',
+      badgeClass: 'text-success',
       buttonText: 'Gerenciar',
-      buttonClass: 'btn-secondary'
+      buttonClass: 'bg-surface-light border border-border/50 hover:border-primary/50'
     },
     available: {
       badge: 'Disponível',
-      badgeClass: 'bg-secondary/20 text-secondary border-secondary/30',
-      buttonText: 'Conectar Agora',
-      buttonClass: 'btn-primary'
+      badgeClass: 'text-primary',
+      buttonText: 'Conectar',
+      buttonClass: 'bg-primary text-background hover:bg-primary/90'
     },
     'coming-soon': {
       badge: 'Em Breve',
-      badgeClass: 'bg-gray-700/50 text-gray-400 border-gray-600',
+      badgeClass: 'text-gray-500',
       buttonText: 'Notificar-me',
-      buttonClass: 'bg-gray-700 hover:bg-gray-600'
+      buttonClass: 'bg-surface-light border border-border/50 text-gray-400'
     }
   }
 
@@ -241,18 +245,19 @@ function IntegrationCard({ integration, index }: { integration: Integration; ind
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="bg-surface border border-border rounded-xl p-6 hover:border-primary/50 transition-all duration-300 group"
+      transition={{ delay: index * 0.05 }}
+      className="group bg-surface border border-border/50 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
     >
+      {/* Header with Logo */}
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 flex items-center justify-center bg-white rounded-lg p-2">
+        <div className="flex items-center gap-4">
+          {/* Logo Container - MANTIDO */}
+          <div className="w-14 h-14 flex items-center justify-center bg-white rounded-xl p-2.5 group-hover:scale-105 transition-transform duration-300">
             <img 
               src={integration.logo} 
               alt={integration.name}
               className="w-full h-full object-contain"
               onError={(e) => {
-                // Fallback para emoji se imagem não carregar
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
                 const parent = target.parentElement;
@@ -260,37 +265,47 @@ function IntegrationCard({ integration, index }: { integration: Integration; ind
                   parent.innerHTML = `<span class="text-2xl">${
                     integration.type === 'broker' ? '🏦' : '📊'
                   }</span>`;
-                  parent.className = 'w-12 h-12 flex items-center justify-center bg-surface-light rounded-lg';
+                  parent.className = 'w-14 h-14 flex items-center justify-center bg-surface-light rounded-xl';
                 }
               }}
             />
           </div>
           <div>
-            <h3 className="font-semibold group-hover:text-primary transition-colors">
+            <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
               {integration.name}
             </h3>
-            <span className={`text-xs px-2 py-1 rounded-full border ${config.badgeClass}`}>
+            <span className={`text-xs font-medium ${config.badgeClass}`}>
               {config.badge}
             </span>
           </div>
         </div>
       </div>
 
-      <p className="text-sm text-gray-400 mb-4">
+      {/* Description */}
+      <p className="text-sm text-gray-400 mb-4 line-clamp-2">
         {integration.description}
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
+      {/* Features */}
+      <div className="flex flex-wrap gap-2 mb-5">
         {integration.features.map((feature) => (
-          <span key={feature} className="text-xs px-2 py-1 bg-surface-light rounded-md text-gray-300">
+          <span 
+            key={feature} 
+            className="text-xs px-2.5 py-1 bg-surface-light/50 border border-border/30 rounded-md text-gray-300"
+          >
             {feature}
           </span>
         ))}
       </div>
 
-      <button className={`w-full ${config.buttonClass} flex items-center justify-center gap-2 group/btn`}>
+      {/* Action Button */}
+      <button 
+        className={`w-full ${config.buttonClass} px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2`}
+      >
         <span>{config.buttonText}</span>
-        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+        {integration.status !== 'coming-soon' && (
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        )}
       </button>
     </motion.div>
   )

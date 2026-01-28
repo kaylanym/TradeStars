@@ -11,8 +11,9 @@ import PortfolioPage from '@/components/PortfolioPage'
 import AnalysisPage from '@/components/AnalysisPage'
 import IntegrationsPage from '@/components/IntegrationsPage'
 import MentorshipPage from '@/components/MentorshipPage'
+import BillingPage from '@/components/BillingPage'
 
-type PageType = 'dashboard' | 'import' | 'insights' | 'trades' | 'portfolio' | 'analysis' | 'integrations' | 'mentorship'
+type PageType = 'dashboard' | 'import' | 'insights' | 'trades' | 'portfolio' | 'analysis' | 'integrations' | 'mentorship' | 'billing'
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<PageType>('dashboard')
@@ -62,6 +63,7 @@ export default function Home() {
           {currentPage === 'import' && <ImportPage />}
           {currentPage === 'insights' && <InsightsPage />}
           {currentPage === 'mentorship' && <MentorshipPage />}
+          {currentPage === 'billing' && <BillingPage />}
         </motion.div>
       </main>
     </div>

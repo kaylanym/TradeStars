@@ -12,7 +12,8 @@ import {
   Send,
   Loader2,
   RefreshCw,
-  MessageSquare
+  MessageSquare,
+  ChevronRight
 } from 'lucide-react'
 import { aiApi, Insight } from '@/lib/api'
 import { cn, getInsightColor } from '@/lib/utils'
@@ -22,44 +23,30 @@ const mockInsights: Insight[] = [
   {
     type: 'success',
     category: 'timing',
-    title: '⏰ Melhor Horário: 10:00',
-    description: 'Você lucra mais às 10:00 (R$ 680.00 de profit). Este é o horário onde você tem maior concentração e assertividade.',
-    action: 'Concentre suas operações entre 09:30 e 11:00 para maximizar resultados.'
+    title: 'Melhor Horário Identificado',
+    description: 'Seu melhor desempenho ocorre às 10:00 com R$ 680 de profit médio. Este é o horário onde você tem maior concentração e assertividade.',
+    action: 'Concentre suas operações entre 09:30 e 11:00'
   },
   {
     type: 'warning',
     category: 'timing',
-    title: '🚫 Evite às 15:00',
-    description: 'Você perde mais às 15:00 (R$ 280.00 de loss). Isso pode estar relacionado ao cansaço ou à volatilidade do fechamento.',
-    action: 'Considere parar de operar após as 14:30 ou fazer uma pausa antes desse horário.'
+    title: 'Horário de Baixa Performance',
+    description: 'Você apresenta maior perda às 15:00 (-R$ 280 em média). Isso pode estar relacionado ao cansaço ou volatilidade do fechamento.',
+    action: 'Considere parar de operar após as 14:30'
   },
   {
-    type: 'danger',
+    type: 'info',
     category: 'symbol',
-    title: '❌ Baixo Win Rate em PETR4',
-    description: 'Seu win rate em PETR4 é de apenas 44% (11/25 trades). Você está perdendo dinheiro consistentemente nesse ativo.',
-    action: 'Pare de operar PETR4 ou estude mais o comportamento desse ativo antes de voltar a operar.'
-  },
-  {
-    type: 'success',
-    category: 'symbol',
-    title: '⭐ Especialista em WINZ24',
-    description: 'Win rate de 67.7% em WINZ24! Lucro total: R$ 1.450,00. Você claramente entende bem esse ativo.',
-    action: 'Continue focando em WINZ24, considere aumentar gradualmente o tamanho das posições.'
+    title: 'Especialista em WINZ24',
+    description: 'Win rate de 67.7% em WINZ24 com lucro total de R$ 1.450. Você demonstra consistência neste ativo.',
+    action: 'Considere aumentar posições gradualmente'
   },
   {
     type: 'warning',
     category: 'psychology',
-    title: '🧠 Possível Revenge Trading',
-    description: 'Você teve uma sequência de 4 losses seguidos em alguns dias. Isso pode indicar trading emocional após perdas.',
-    action: 'Após 2 losses seguidos, faça uma pausa obrigatória de 30 minutos.'
-  },
-  {
-    type: 'info',
-    category: 'risk',
-    title: '💰 Limites Sugeridos',
-    description: 'Com base no seu histórico, seu loss diário máximo deveria ser R$ 150,00 e sua meta de gain R$ 300,00.',
-    action: 'Configure esses limites no seu operacional e respeite-os rigorosamente.'
+    title: 'Padrão de Revenge Trading Detectado',
+    description: 'Sequências de 4 losses consecutivos foram identificadas, indicando possível trading emocional após perdas.',
+    action: 'Implemente pausa obrigatória de 30min após 2 losses'
   },
 ]
 
@@ -129,27 +116,31 @@ export default function InsightsPage() {
       case 'danger':
         return <XCircle className="w-5 h-5 text-danger" />
       case 'info':
-        return <Info className="w-5 h-5 text-secondary" />
+        return <Info className="w-5 h-5 text-primary" />
       default:
         return <Sparkles className="w-5 h-5 text-primary" />
     }
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-8 relative">
+      {/* Background Glow Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-primary/15 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
+      </div>
+
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between relative z-10">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Brain className="w-8 h-8 text-primary" />
-            Insights IA
-          </h1>
-          <p className="text-gray-400 mt-1">Análise inteligente das suas operações</p>
+          <h1 className="text-4xl font-bold mb-2">Insights IA</h1>
+          <p className="text-gray-400">Análise inteligente das suas operações</p>
         </div>
         <button
           onClick={fetchInsights}
           disabled={loading}
-          className="btn-secondary flex items-center gap-2"
+          className="px-4 py-2.5 bg-surface border border-border/50 hover:border-primary/50 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
         >
           <RefreshCw className={cn('w-4 h-4', loading && 'animate-spin')} />
           Atualizar
@@ -157,30 +148,30 @@ export default function InsightsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-surface rounded-xl border border-border">
+      <div className="flex gap-2 p-1.5 bg-surface border border-border/50 rounded-lg relative z-10">
         <button
           onClick={() => setActiveTab('insights')}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-all duration-200',
+            'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md transition-all duration-200 text-sm font-medium',
             activeTab === 'insights'
-              ? 'bg-primary text-background font-semibold'
-              : 'text-gray-400 hover:text-white hover:bg-surface-light'
+              ? 'bg-primary text-background'
+              : 'text-gray-400 hover:text-white hover:bg-surface-light/50'
           )}
         >
-          <Sparkles className="w-5 h-5" />
-          Insights
+          <Brain className="w-4 h-4" />
+          Análises
         </button>
         <button
           onClick={() => setActiveTab('chat')}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-all duration-200',
+            'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md transition-all duration-200 text-sm font-medium',
             activeTab === 'chat'
-              ? 'bg-primary text-background font-semibold'
-              : 'text-gray-400 hover:text-white hover:bg-surface-light'
+              ? 'bg-primary text-background'
+              : 'text-gray-400 hover:text-white hover:bg-surface-light/50'
           )}
         >
-          <MessageSquare className="w-5 h-5" />
-          Chat com IA
+          <MessageSquare className="w-4 h-4" />
+          Chat
         </button>
       </div>
 
@@ -191,46 +182,43 @@ export default function InsightsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="space-y-4"
+            className="space-y-4 relative z-10"
           >
             {loading ? (
-              <div className="flex items-center justify-center py-20">
+              <div className="flex items-center justify-center py-32">
                 <div className="text-center">
                   <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
                   <p className="text-gray-400">Analisando seus trades...</p>
                 </div>
               </div>
             ) : (
-              insights.map((insight, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={cn(
-                    'p-6 rounded-2xl border-l-4',
-                    getInsightColor(insight.type)
-                  )}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="mt-1">
-                      {getIcon(insight.type)}
+              <div className="space-y-4">
+                {insights.map((insight, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="bg-surface border border-border/50 rounded-2xl p-6 hover:border-border/70 transition-colors"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 mt-1">
+                        {getIcon(insight.type)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg mb-2">{insight.title}</h3>
+                        <p className="text-sm text-gray-400 mb-4">{insight.description}</p>
+                        {insight.action && (
+                          <div className="flex items-start gap-2 pt-4 border-t border-border/30">
+                            <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                            <p className="text-sm text-gray-300">{insight.action}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg mb-2">{insight.title}</h3>
-                      <p className="text-gray-300 mb-3">{insight.description}</p>
-                      {insight.action && (
-                        <div className="bg-background/50 rounded-xl p-3 border border-border">
-                          <p className="text-sm">
-                            <span className="text-primary font-medium">💡 Ação:</span>{' '}
-                            <span className="text-gray-300">{insight.action}</span>
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))
+                  </motion.div>
+                ))}
+              </div>
             )}
           </motion.div>
         )}
@@ -241,28 +229,29 @@ export default function InsightsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-surface rounded-2xl border border-border overflow-hidden"
+            className="bg-surface border border-border/50 rounded-2xl overflow-hidden relative z-10"
           >
             {/* Chat Messages */}
-            <div className="h-[500px] overflow-y-auto p-6 space-y-4">
+            <div className="h-[520px] overflow-y-auto p-6 space-y-4">
               {chatMessages.length === 0 && (
-                <div className="text-center py-20">
-                  <Brain className="w-16 h-16 text-primary/50 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Chat com IA</h3>
-                  <p className="text-gray-400 max-w-md mx-auto">
-                    Faça perguntas sobre suas operações, peça dicas de melhoria ou 
-                    discuta estratégias com a IA.
+                <div className="text-center py-24">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Brain className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Converse com a IA</h3>
+                  <p className="text-gray-400 max-w-md mx-auto mb-6">
+                    Faça perguntas sobre suas operações e receba análises personalizadas
                   </p>
-                  <div className="mt-6 flex flex-wrap justify-center gap-2">
+                  <div className="flex flex-wrap justify-center gap-2">
                     {[
-                      'Qual meu melhor horário para operar?',
-                      'Como melhorar meu win rate?',
+                      'Qual meu melhor horário?',
+                      'Como melhorar win rate?',
                       'Analise minha gestão de risco',
                     ].map((suggestion, index) => (
                       <button
                         key={index}
                         onClick={() => setChatInput(suggestion)}
-                        className="px-4 py-2 bg-surface-light rounded-full text-sm text-gray-300 hover:text-white hover:bg-primary/20 transition-colors"
+                        className="px-4 py-2 bg-surface-light border border-border/50 hover:border-primary/50 rounded-lg text-sm text-gray-300 hover:text-white transition-colors"
                       >
                         {suggestion}
                       </button>
@@ -283,19 +272,19 @@ export default function InsightsPage() {
                 >
                   <div
                     className={cn(
-                      'max-w-[80%] p-4 rounded-2xl',
+                      'max-w-[80%] p-4 rounded-lg',
                       message.role === 'user'
-                        ? 'bg-primary text-background rounded-br-sm'
-                        : 'bg-surface-light text-white rounded-bl-sm'
+                        ? 'bg-primary text-background'
+                        : 'bg-surface-light border border-border/30 text-white'
                     )}
                   >
                     {message.role === 'assistant' && (
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/30">
                         <Brain className="w-4 h-4 text-primary" />
-                        <span className="text-xs text-primary font-medium">TradeStars IA</span>
+                        <span className="text-xs text-gray-400 font-medium">TradeStars IA</span>
                       </div>
                     )}
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
                   </div>
                 </motion.div>
               ))}
@@ -306,10 +295,10 @@ export default function InsightsPage() {
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="bg-surface-light p-4 rounded-2xl rounded-bl-sm">
+                  <div className="bg-surface-light border border-border/30 p-4 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 text-primary animate-spin" />
-                      <span className="text-gray-400 text-sm">Pensando...</span>
+                      <span className="text-gray-400 text-sm">Analisando...</span>
                     </div>
                   </div>
                 </motion.div>
@@ -319,7 +308,7 @@ export default function InsightsPage() {
             </div>
 
             {/* Chat Input */}
-            <div className="p-4 border-t border-border">
+            <div className="p-4 border-t border-border/50">
               <div className="flex gap-3">
                 <input
                   type="text"
@@ -327,12 +316,12 @@ export default function InsightsPage() {
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendChat()}
                   placeholder="Pergunte algo sobre suas operações..."
-                  className="flex-1 bg-background border border-border rounded-xl px-4 py-3 focus:border-primary transition-colors"
+                  className="flex-1 bg-background border border-border/50 rounded-lg px-4 py-3 text-sm focus:border-primary/50 focus:outline-none transition-colors"
                 />
                 <button
                   onClick={handleSendChat}
                   disabled={!chatInput.trim() || chatLoading}
-                  className="btn-primary px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-primary hover:bg-primary/90 text-background px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-5 h-5" />
                 </button>
@@ -341,28 +330,6 @@ export default function InsightsPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Pro Upgrade CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl p-6 border border-primary/30"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-xl font-bold mb-2">🚀 Desbloqueie Insights Avançados</h3>
-            <p className="text-gray-400">
-              Análises mais profundas, detecção de padrões e recomendações personalizadas com IA.
-            </p>
-          </div>
-          <button className="btn-primary whitespace-nowrap">
-            Upgrade Pro
-          </button>
-        </div>
-      </motion.div>
     </div>
   )
 }
-
-

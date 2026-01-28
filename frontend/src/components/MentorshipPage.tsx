@@ -4,38 +4,38 @@ import { motion } from 'framer-motion'
 import {
   MessageSquare,
   User,
-  Clock,
   Star,
   TrendingUp,
-  CheckCircle,
   Send,
-  Sparkles
+  Sparkles,
+  Calendar,
+  Shield
 } from 'lucide-react'
 
 // Mock data
-const mentor = {
+const analyst = {
   name: 'Analista TradeStars',
-  title: 'Especialista em Investimentos',
+  title: 'Especialista Certificado em Investimentos',
   avatar: '👨‍💼',
   rating: 4.9,
-  students: 1234,
+  clients: 847,
   experience: '15+ anos'
 }
 
 const recentRecommendations = [
   {
     id: 1,
-    date: '2026-01-27',
+    date: '27 Jan 2026',
     type: 'buy',
     asset: 'VALE3',
     price: 68.50,
     target: 78.00,
     reason: 'Forte demanda por minério de ferro e resultado positivo no último trimestre.',
-    status: 'pending'
+    status: 'active'
   },
   {
     id: 2,
-    date: '2026-01-25',
+    date: '25 Jan 2026',
     type: 'sell',
     asset: 'PETR4',
     price: 32.80,
@@ -45,7 +45,7 @@ const recentRecommendations = [
   },
   {
     id: 3,
-    date: '2026-01-23',
+    date: '23 Jan 2026',
     type: 'hold',
     asset: 'ITUB4',
     price: 26.90,
@@ -58,7 +58,7 @@ const recentRecommendations = [
 const chatMessages = [
   {
     id: 1,
-    sender: 'mentor',
+    sender: 'analyst',
     text: 'Olá! Analisei seu portfolio e identifiquei algumas oportunidades interessantes. Gostaria de discutir?',
     time: '10:30'
   },
@@ -70,8 +70,8 @@ const chatMessages = [
   },
   {
     id: 3,
-    sender: 'mentor',
-    text: 'Notei que você tem alta concentração no setor financeiro (35%). Recomendo diversificar para tecnologia e consumo. O que acha?',
+    sender: 'analyst',
+    text: 'Notei que você tem alta concentração no setor financeiro (35%). Recomendo diversificar para tecnologia e consumo.',
     time: '10:33'
   },
   {
@@ -82,7 +82,7 @@ const chatMessages = [
   },
   {
     id: 5,
-    sender: 'mentor',
+    sender: 'analyst',
     text: 'Com certeza! WEGE3 e MGLU3 estão com bons fundamentos. Também vale olhar TOTS3 no setor de tecnologia.',
     time: '10:36'
   },
@@ -90,89 +90,85 @@ const chatMessages = [
 
 export default function MentorshipPage() {
   return (
-    <div className="p-8 space-y-8">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <MessageSquare className="w-6 h-6 text-background" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold gradient-text">Mentoria Profissional</h1>
-            <p className="text-gray-400">Orientação personalizada para seus investimentos</p>
-          </div>
-        </div>
-
-        {/* Coming Soon Banner */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mt-6 bg-gradient-to-r from-orange-500/20 to-orange-600/20 border border-orange-500/30 rounded-xl p-4"
-        >
-          <div className="flex items-center gap-3">
-            <Clock className="w-6 h-6 text-orange-400" />
-            <div>
-              <h3 className="font-semibold text-orange-400">Em Desenvolvimento</h3>
-              <p className="text-sm text-gray-400">Este recurso estará disponível em breve com mentores certificados!</p>
-            </div>
-          </div>
-        </motion.div>
+    <div className="p-8 space-y-8 relative">
+      {/* Background Glow Effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-40 left-20 w-96 h-96 bg-primary/15 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-40 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-2/3 left-1/2 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
       </div>
 
-      {/* Mentor Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Header */}
+      <div className="relative z-10">
+        <h1 className="text-4xl font-bold mb-2">Analista TradeStars</h1>
+        <p className="text-gray-400">Orientação profissional personalizada para seus investimentos</p>
+      </div>
+
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
+        {/* Analyst Card */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           className="lg:col-span-1"
         >
-          <div className="bg-surface border border-border rounded-xl p-6 sticky top-8">
+          <div className="bg-surface border border-border/50 rounded-2xl p-6 sticky top-8">
             <div className="text-center mb-6">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-5xl">
-                {mentor.avatar}
+              <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center text-4xl border border-border/50">
+                {analyst.avatar}
               </div>
-              <h2 className="text-xl font-bold mb-1">{mentor.name}</h2>
-              <p className="text-sm text-gray-400 mb-4">{mentor.title}</p>
+              <h2 className="text-xl font-bold mb-1">{analyst.name}</h2>
+              <p className="text-sm text-gray-400 mb-4">{analyst.title}</p>
 
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  <span className="font-semibold">{mentor.rating}</span>
+              <div className="flex items-center justify-center gap-6 mb-6">
+                <div className="text-center">
+                  <div className="flex items-center gap-1 justify-center mb-1">
+                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                    <span className="font-semibold text-lg">{analyst.rating}</span>
+                  </div>
+                  <p className="text-xs text-gray-400">Avaliação</p>
                 </div>
-                <div className="flex items-center gap-1">
-                  <User className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-400">{mentor.students}+ alunos</span>
+                <div className="text-center">
+                  <div className="flex items-center gap-1 justify-center mb-1">
+                    <User className="w-4 h-4 text-primary" />
+                    <span className="font-semibold text-lg">{analyst.clients}</span>
+                  </div>
+                  <p className="text-xs text-gray-400">Clientes</p>
                 </div>
               </div>
 
-              <div className="bg-surface-light rounded-lg p-3 mb-4">
-                <p className="text-xs text-gray-400 mb-1">Experiência</p>
-                <p className="font-semibold">{mentor.experience}</p>
+              <div className="bg-surface-light border border-border/30 rounded-lg p-3 mb-6">
+                <p className="text-xs text-gray-400 mb-1">Experiência no Mercado</p>
+                <p className="font-semibold text-lg">{analyst.experience}</p>
               </div>
             </div>
 
-            <div className="space-y-3">
-              <button className="w-full btn-primary flex items-center justify-center gap-2">
+            <div className="space-y-3 mb-6">
+              <button className="w-full bg-primary hover:bg-primary/90 text-background px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Iniciar Conversa
               </button>
-              <button className="w-full btn-secondary flex items-center justify-center gap-2">
-                <Clock className="w-4 h-4" />
-                Agendar Reunião
+              <button className="w-full bg-surface-light border border-border/50 hover:border-primary/50 text-white px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Agendar Consultoria
               </button>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-border">
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary" />
-                Especialidades
-              </h3>
+            <div className="pt-6 border-t border-border/30">
+              <h3 className="font-semibold mb-3 text-sm text-gray-400">Especialidades</h3>
               <div className="flex flex-wrap gap-2">
                 {['Ações', 'Renda Fixa', 'FIIs', 'Day Trade', 'Análise Técnica'].map((tag) => (
-                  <span key={tag} className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full border border-primary/20">
+                  <span key={tag} className="text-xs px-3 py-1.5 bg-surface-light border border-border/50 rounded-lg">
                     {tag}
                   </span>
                 ))}
+              </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-border/30">
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <Shield className="w-4 h-4 text-primary" />
+                <span>Disponível no Plano Premium</span>
               </div>
             </div>
           </div>
@@ -181,47 +177,47 @@ export default function MentorshipPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Chat Section */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-surface border border-border rounded-xl overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-surface border border-border/50 rounded-2xl overflow-hidden"
           >
-            <div className="bg-surface-light border-b border-border p-4">
+            <div className="bg-surface-light border-b border-border/50 p-4">
               <h2 className="font-semibold flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-primary" />
-                Conversa com Mentor
+                Conversa com Analista
               </h2>
             </div>
 
-            <div className="h-96 overflow-y-auto p-6 space-y-4">
+            <div className="h-[400px] overflow-y-auto p-6 space-y-4">
               {chatMessages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[70%] rounded-2xl px-4 py-3 ${
+                    className={`max-w-[75%] rounded-lg px-4 py-3 ${
                       message.sender === 'user'
-                        ? 'bg-gradient-to-r from-primary to-secondary text-white'
-                        : 'bg-surface-light'
+                        ? 'bg-primary text-background'
+                        : 'bg-surface-light border border-border/30'
                     }`}
                   >
-                    <p className="text-sm">{message.text}</p>
-                    <span className="text-xs opacity-70 mt-1 block">{message.time}</span>
+                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    <span className="text-xs opacity-60 mt-2 block">{message.time}</span>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-border p-4">
-              <div className="flex gap-2">
+            <div className="border-t border-border/50 p-4">
+              <div className="flex gap-3">
                 <input
                   type="text"
                   placeholder="Digite sua mensagem..."
-                  className="flex-1 bg-surface-light border border-border rounded-lg px-4 py-2 focus:outline-none focus:border-primary transition-colors"
+                  className="flex-1 bg-background border border-border/50 rounded-lg px-4 py-3 text-sm focus:border-primary/50 focus:outline-none transition-colors"
                 />
-                <button className="btn-primary px-6 flex items-center gap-2">
+                <button className="bg-primary hover:bg-primary/90 text-background px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
                   <Send className="w-4 h-4" />
-                  Enviar
                 </button>
               </div>
             </div>
@@ -231,7 +227,8 @@ export default function MentorshipPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-surface border border-border rounded-xl p-6"
+            transition={{ delay: 0.2 }}
+            className="bg-surface border border-border/50 rounded-2xl p-6"
           >
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-primary" />
@@ -241,54 +238,61 @@ export default function MentorshipPage() {
             <div className="space-y-4">
               {recentRecommendations.map((rec) => {
                 const typeConfig = {
-                  buy: { label: 'Comprar', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30' },
-                  sell: { label: 'Vender', color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30' },
-                  hold: { label: 'Manter', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30' }
+                  buy: { label: 'Comprar', icon: '↗' },
+                  sell: { label: 'Vender', icon: '↘' },
+                  hold: { label: 'Manter', icon: '=' }
                 }
                 const config = typeConfig[rec.type as keyof typeof typeConfig]
 
                 const statusConfig = {
-                  pending: { label: 'Pendente', color: 'text-orange-400' },
-                  active: { label: 'Ativa', color: 'text-blue-400' },
-                  completed: { label: 'Concluída', color: 'text-green-400' }
+                  active: { label: 'Ativa', dot: 'bg-primary' },
+                  completed: { label: 'Concluída', dot: 'bg-success' }
                 }
                 const statusStyle = statusConfig[rec.status as keyof typeof statusConfig]
 
                 return (
-                  <div key={rec.id} className={`${config.bg} border ${config.border} rounded-lg p-4`}>
+                  <div key={rec.id} className="bg-surface-light border border-border/30 rounded-xl p-5 hover:border-border/50 transition-colors">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className={`${config.bg} px-3 py-1 rounded-full border ${config.border}`}>
-                          <span className={`text-sm font-semibold ${config.color}`}>{config.label}</span>
+                        <div className="w-10 h-10 bg-surface border border-border/50 rounded-lg flex items-center justify-center text-lg">
+                          {config.icon}
                         </div>
                         <div>
-                          <h3 className="font-bold text-lg">{rec.asset}</h3>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-bold text-lg">{rec.asset}</h3>
+                            <span className="text-xs px-2 py-1 bg-surface border border-border/50 rounded">
+                              {config.label}
+                            </span>
+                          </div>
                           <p className="text-xs text-gray-400">{rec.date}</p>
                         </div>
                       </div>
-                      <span className={`text-xs font-medium ${statusStyle.color}`}>
-                        {statusStyle.label}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <div className={`w-2 h-2 rounded-full ${statusStyle.dot}`} />
+                        <span className="text-xs text-gray-400">{statusStyle.label}</span>
+                      </div>
                     </div>
 
-                    <p className="text-sm text-gray-400 mb-3">{rec.reason}</p>
+                    <p className="text-sm text-gray-400 mb-4 leading-relaxed">{rec.reason}</p>
 
-                    <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-6 text-sm pt-4 border-t border-border/30">
                       <div>
-                        <p className="text-gray-400">Preço Alvo</p>
-                        <p className="font-semibold">{rec.target ? `R$ ${rec.target.toFixed(2)}` : '-'}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-400">Preço Atual</p>
+                        <p className="text-xs text-gray-400 mb-1">Preço Atual</p>
                         <p className="font-semibold">R$ {rec.price.toFixed(2)}</p>
                       </div>
                       {rec.target && (
-                        <div>
-                          <p className="text-gray-400">Potencial</p>
-                          <p className={`font-semibold ${config.color}`}>
-                            +{(((rec.target - rec.price) / rec.price) * 100).toFixed(1)}%
-                          </p>
-                        </div>
+                        <>
+                          <div>
+                            <p className="text-xs text-gray-400 mb-1">Alvo</p>
+                            <p className="font-semibold">R$ {rec.target.toFixed(2)}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-400 mb-1">Potencial</p>
+                            <p className="font-semibold text-primary">
+                              +{(((rec.target - rec.price) / rec.price) * 100).toFixed(1)}%
+                            </p>
+                          </div>
+                        </>
                       )}
                     </div>
                   </div>
@@ -298,6 +302,31 @@ export default function MentorshipPage() {
           </motion.div>
         </div>
       </div>
+
+      {/* Premium CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="bg-surface border border-primary/30 rounded-2xl p-6 relative z-10"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-1">Acesso Exclusivo para Membros Premium</h3>
+              <p className="text-sm text-gray-400">
+                Consultoria personalizada, recomendações semanais e análise de portfolio completa
+              </p>
+            </div>
+          </div>
+          <button className="bg-primary hover:bg-primary/90 text-background px-6 py-3 rounded-lg font-semibold transition-colors whitespace-nowrap">
+            Fazer Upgrade
+          </button>
+        </div>
+      </motion.div>
     </div>
   )
 }
