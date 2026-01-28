@@ -7,8 +7,12 @@ import Dashboard from '@/components/Dashboard'
 import ImportPage from '@/components/ImportPage'
 import InsightsPage from '@/components/InsightsPage'
 import TradesPage from '@/components/TradesPage'
+import PortfolioPage from '@/components/PortfolioPage'
+import AnalysisPage from '@/components/AnalysisPage'
+import IntegrationsPage from '@/components/IntegrationsPage'
+import MentorshipPage from '@/components/MentorshipPage'
 
-type PageType = 'dashboard' | 'import' | 'insights' | 'trades'
+type PageType = 'dashboard' | 'import' | 'insights' | 'trades' | 'portfolio' | 'analysis' | 'integrations' | 'mentorship'
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<PageType>('dashboard')
@@ -50,9 +54,13 @@ export default function Home() {
           transition={{ duration: 0.3 }}
         >
           {currentPage === 'dashboard' && <Dashboard />}
+          {currentPage === 'trades' && <TradesPage />}
+          {currentPage === 'portfolio' && <PortfolioPage />}
+          {currentPage === 'analysis' && <AnalysisPage />}
+          {currentPage === 'integrations' && <IntegrationsPage />}
           {currentPage === 'import' && <ImportPage />}
           {currentPage === 'insights' && <InsightsPage />}
-          {currentPage === 'trades' && <TradesPage />}
+          {currentPage === 'mentorship' && <MentorshipPage />}
         </motion.div>
       </main>
     </div>

@@ -12,18 +12,37 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-type PageType = 'dashboard' | 'import' | 'insights' | 'trades'
+type PageType = 'dashboard' | 'import' | 'insights' | 'trades' | 'portfolio' | 'analysis' | 'integrations' | 'mentorship'
 
 interface SidebarProps {
   currentPage: PageType
   onNavigate: (page: PageType) => void
 }
 
-const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'trades', label: 'Meus Trades', icon: LineChart },
-  { id: 'import', label: 'Importar Dados', icon: Upload },
-  { id: 'insights', label: 'Insights IA', icon: Brain },
+const menuSections = [
+  {
+    title: 'Principal',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { id: 'trades', label: 'Meus Trades', icon: LineChart },
+      { id: 'portfolio', label: 'Meu Portfolio', icon: TrendingUp, badge: 'Novo' },
+      { id: 'analysis', label: 'Análise Portfolio', icon: Brain, badge: 'Novo' },
+    ]
+  },
+  {
+    title: 'Configurações',
+    items: [
+      { id: 'integrations', label: 'Integrações', icon: Settings, badge: 'Novo' },
+      { id: 'import', label: 'Importar Dados', icon: Upload },
+    ]
+  },
+  {
+    title: 'Inteligência',
+    items: [
+      { id: 'insights', label: 'Insights IA', icon: Brain },
+      { id: 'mentorship', label: 'Mentoria', icon: LogOut, badge: 'Em Breve' },
+    ]
+  }
 ]
 
 export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
@@ -43,36 +62,55 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon
-            const isActive = currentPage === item.id
-            
-            return (
-              <li key={item.id}>
-                <button
-                  onClick={() => onNavigate(item.id as PageType)}
-                  className={cn(
-                    'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200',
-                    isActive 
-                      ? 'bg-primary/10 text-primary border border-primary/20' 
-                      : 'text-gray-400 hover:text-white hover:bg-surface-light'
-                  )}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="ml-auto w-2 h-2 rounded-full bg-primary"
-                    />
-                  )}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+      <nav className="flex-1 p-4 overflow-y-auto">
+        <div className="space-y-6">
+          {menuSections.map((section) => (
+            <div key={section.title}>
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2">
+                {section.title}
+              </h3>
+              <ul className="space-y-1">
+                {section.items.map((item) => {
+                  const Icon = item.icon
+                  const isActive = currentPage === item.id
+                  
+                  return (
+                    <li key={item.id}>
+                      <button
+                        onClick={() => onNavigate(item.id as PageType)}
+                        className={cn(
+                          'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative',
+                          isActive 
+                            ? 'bg-primary/10 text-primary border border-primary/20' 
+                            : 'text-gray-400 hover:text-white hover:bg-surface-light'
+                        )}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span className="font-medium flex-1 text-left">{item.label}</span>
+                        {item.badge && (
+                          <span className={cn(
+                            'text-[10px] font-bold px-2 py-0.5 rounded-full',
+                            item.badge === 'Novo' 
+                              ? 'bg-primary text-background' 
+                              : 'bg-gray-700 text-gray-300'
+                          )}>
+                            {item.badge}
+                          </span>
+                        )}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            className="absolute right-2 w-2 h-2 rounded-full bg-primary"
+                          />
+                        )}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
       </nav>
 
       {/* Pro Badge */}
