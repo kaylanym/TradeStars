@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+*.db
+*.sqlite
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/build/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
