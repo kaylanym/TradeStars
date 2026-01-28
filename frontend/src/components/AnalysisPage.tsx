@@ -92,56 +92,56 @@ export default function AnalysisPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-6"
+          className="bg-surface border border-border/50 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-400">Score Geral</span>
-            <CheckCircle className="w-5 h-5 text-primary" />
+            <span className="text-xs text-gray-500 font-medium">Score Geral</span>
+            <CheckCircle className="w-4 h-4 text-gray-500" />
           </div>
-          <p className="text-4xl font-bold gradient-text mb-1">8.5</p>
-          <p className="text-xs text-gray-400">Muito Bom</p>
+          <p className="text-3xl font-semibold text-primary mb-1">8.5</p>
+          <p className="text-xs text-gray-500">Muito Bom</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          className="bg-surface border border-border/50 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-400">Risco</span>
-            <Activity className="w-5 h-5 text-secondary" />
+            <span className="text-xs text-gray-500 font-medium">Risco</span>
+            <Activity className="w-4 h-4 text-gray-500" />
           </div>
-          <p className="text-4xl font-bold text-secondary mb-1">Médio</p>
-          <p className="text-xs text-gray-400">Balanceado</p>
+          <p className="text-3xl font-semibold text-white mb-1">Médio</p>
+          <p className="text-xs text-gray-500">Balanceado</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          className="bg-surface border border-border/50 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-400">Retorno Anual</span>
-            <TrendingUp className="w-5 h-5 text-primary" />
+            <span className="text-xs text-gray-500 font-medium">Retorno Anual</span>
+            <TrendingUp className="w-4 h-4 text-gray-500" />
           </div>
-          <p className="text-4xl font-bold text-primary mb-1">+38.9%</p>
-          <p className="text-xs text-gray-400">vs IBOV +24.2%</p>
+          <p className="text-3xl font-semibold text-primary mb-1">+38.9%</p>
+          <p className="text-xs text-gray-500">vs IBOV +24.2%</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-surface border border-border rounded-xl p-6"
+          className="bg-surface border border-border/50 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-400">Sharpe Ratio</span>
-            <Target className="w-5 h-5 text-gray-400" />
+            <span className="text-xs text-gray-500 font-medium">Sharpe Ratio</span>
+            <Target className="w-4 h-4 text-gray-500" />
           </div>
-          <p className="text-4xl font-bold mb-1">1.85</p>
-          <p className="text-xs text-gray-400">Excelente</p>
+          <p className="text-3xl font-semibold text-white mb-1">1.85</p>
+          <p className="text-xs text-gray-500">Excelente</p>
         </motion.div>
       </div>
 
@@ -191,14 +191,14 @@ export default function AnalysisPage() {
           
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={performanceComparison}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="month" stroke="#9ca3af" />
-              <YAxis stroke="#9ca3af" />
-              <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }} />
-              <Legend />
-              <Line type="monotone" dataKey="portfolio" stroke="#10b981" strokeWidth={2} name="Seu Portfolio" />
-              <Line type="monotone" dataKey="ibov" stroke="#3b82f6" strokeWidth={2} name="IBOVESPA" />
-              <Line type="monotone" dataKey="cdi" stroke="#9ca3af" strokeWidth={2} strokeDasharray="5 5" name="CDI" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" strokeWidth={0.5} />
+              <XAxis dataKey="month" stroke="#71717a" tick={{ fontSize: 12 }} />
+              <YAxis stroke="#71717a" tick={{ fontSize: 12 }} />
+              <Tooltip contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '6px', fontSize: '12px' }} />
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
+              <Line type="monotone" dataKey="portfolio" stroke="#3b82f6" strokeWidth={1.5} name="Seu Portfolio" dot={false} />
+              <Line type="monotone" dataKey="ibov" stroke="#64748b" strokeWidth={1.5} name="IBOVESPA" dot={false} />
+              <Line type="monotone" dataKey="cdi" stroke="#94a3b8" strokeWidth={1.5} strokeDasharray="3 3" name="CDI" dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </motion.div>

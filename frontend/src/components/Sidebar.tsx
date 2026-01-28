@@ -47,15 +47,15 @@ const menuSections = [
 
 export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-surface border-r border-border flex flex-col">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-surface border-r border-border/50 flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-border">
+      <div className="p-6 border-b border-border/50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-1.5">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center p-1.5">
             <img src="/logo.png" alt="TradeStars" className="w-full h-full object-contain" />
           </div>
           <div>
-            <h1 className="text-xl font-bold gradient-text">TradeStars</h1>
+            <h1 className="text-xl font-semibold text-white">TradeStars</h1>
             <p className="text-xs text-gray-500">Trading Analytics</p>
           </div>
         </div>
@@ -79,20 +79,20 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
                       <button
                         onClick={() => onNavigate(item.id as PageType)}
                         className={cn(
-                          'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative',
+                          'w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 relative',
                           isActive 
-                            ? 'bg-primary/10 text-primary border border-primary/20' 
+                            ? 'bg-primary/10 text-primary' 
                             : 'text-gray-400 hover:text-white hover:bg-surface-light'
                         )}
                       >
-                        <Icon className="w-5 h-5" />
-                        <span className="font-medium flex-1 text-left">{item.label}</span>
+                        <Icon className="w-4 h-4" />
+                        <span className="font-medium flex-1 text-left text-sm">{item.label}</span>
                         {item.badge && (
                           <span className={cn(
-                            'text-[10px] font-bold px-2 py-0.5 rounded-full',
+                            'text-[9px] font-medium px-1.5 py-0.5 rounded',
                             item.badge === 'Novo' 
-                              ? 'bg-primary text-background' 
-                              : 'bg-gray-700 text-gray-300'
+                              ? 'bg-primary/20 text-primary' 
+                              : 'bg-gray-700/50 text-gray-400'
                           )}>
                             {item.badge}
                           </span>
@@ -100,7 +100,7 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
                         {isActive && (
                           <motion.div
                             layoutId="activeIndicator"
-                            className="absolute right-2 w-2 h-2 rounded-full bg-primary"
+                            className="absolute left-0 w-0.5 h-5 bg-primary rounded-r"
                           />
                         )}
                       </button>
@@ -113,27 +113,11 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
         </div>
       </nav>
 
-      {/* Pro Badge */}
-      <div className="p-4">
-        <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl p-4 border border-primary/20">
-          <div className="flex items-center gap-2 mb-2">
-            <Brain className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-sm">TradeStars Pro</span>
-          </div>
-          <p className="text-xs text-gray-400 mb-3">
-            Desbloqueie insights avançados com IA
-          </p>
-          <button className="w-full btn-primary text-sm py-2">
-            Upgrade
-          </button>
-        </div>
-      </div>
-
       {/* Footer */}
-      <div className="p-4 border-t border-border">
-        <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-400 hover:text-white rounded-lg transition-colors">
-          <Settings className="w-5 h-5" />
-          <span className="text-sm">Configurações</span>
+      <div className="p-4 border-t border-border/50">
+        <button className="w-full flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-white rounded-lg transition-colors text-sm">
+          <Settings className="w-4 h-4" />
+          <span>Configurações</span>
         </button>
       </div>
     </aside>
