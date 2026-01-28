@@ -51,8 +51,8 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       {/* Logo */}
       <div className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-background" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-1.5">
+            <img src="/logo.png" alt="TradeStars" className="w-full h-full object-contain" />
           </div>
           <div>
             <h1 className="text-xl font-bold gradient-text">TradeStars</h1>
